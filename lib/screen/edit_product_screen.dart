@@ -48,6 +48,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   void _updateImageUrl() {
     if (!_imageUrlFocusNode.hasFocus) {
+      
       setState(() {});
     }
   }
@@ -116,18 +117,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_descriptionFocusNode);
                 },
-                validator: (value){
-                  if(value!.isEmpty){
-                    return 'please Enter a price';
-                  }
-                  if(double.tryParse(value) == null){
-                    return "please enter a valid number";
-                  }
-                  if(double.tryParse(value)! <= 0){
-                    return 'please enter a number greater than zero';
-                  }
-                  return null;
-                },
+                // validator: (value){
+                //   if(value!.isEmpty){
+                //     return 'please Enter a price';
+                //   }
+                //   if(double.tryParse(value) == null){
+                //     return "please enter a valid number";
+                //   }
+                //   if(double.tryParse(value)! <= 0){
+                //     return 'please enter a number greater than zero';
+                //   }
+                //   return null;
+                // },
                 onSaved: (value) {
                   _editedProduct = Product(
                     id: '',
@@ -145,6 +146,15 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 keyboardType: TextInputType.multiline,
                 maxLines: 3,
                 focusNode: _descriptionFocusNode,
+                validator: (value){
+                  if(value!.isEmpty){
+                    return 'please provide a description';
+                  }
+                  if(value.length < 10){
+                    return 'should be at least 10 char long';
+                  }
+                  return null;
+                },
                   onSaved: (value) {
                   _editedProduct = Product(
                     id: '',
@@ -189,6 +199,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       onFieldSubmitted: (_) {
                         _saveForm();
                       },
+                      validator: (value){
+                
+                  return null;
+                },
                         onSaved: (value) {
                   _editedProduct = Product(
                     id: '',
