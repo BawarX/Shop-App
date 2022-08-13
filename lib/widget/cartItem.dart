@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopapp/provider/cart.dart';
@@ -30,6 +31,34 @@ class cartItem extends StatelessWidget {
         ),
       ),
       direction: DismissDirection.endToStart,
+      confirmDismiss: (direction) {
+       return showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text(
+              "barasta datawe rash kayawa???",
+            ),
+            content: Text(
+              "Do you want to remove the item from the cart?",
+            ),
+            actions: [
+              FlatButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop(false);
+                },
+                child: Text("No"),
+              ),
+              FlatButton(
+                onPressed: () {
+                       Navigator.of(ctx).pop(true);
+                },
+                child: Text("Yes"),
+              ),
+            ],
+          ),
+        );
+       
+      },
       onDismissed: (direction) {
         Provider.of<Cart>(
           context,
