@@ -33,6 +33,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   void dispose() {
+   final isValid = _form.currentState!.validate();
+    if(!isValid){
+      return;
+    }
+    _form.currentState!.save();
     _priceFocusNode.dispose();
     _descriptionFocusNode.dispose();
     _imageUrlController.dispose();
@@ -85,6 +90,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_priceFocusNode);
                 },
+                validator: (value){
+                  if(value!.isEmpty){
+                    return 'please provide a value';
+                  }
+                  return null;
+                },
                 onSaved: (value) {
                   _editedProduct = Product(
                     id: '',
@@ -104,6 +115,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 focusNode: _priceFocusNode,
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_descriptionFocusNode);
+                },
+                validator: (value){
+                  if(value!.isEmpty){
+                    return 'please Enter a price';
+                  }
+                  if(double.tryParse(value) == null){
+                    return "please enter a valid number";
+                  }
+                  if(double.tryParse(value)! <= 0){
+                    return 'please enter a number greater than zero';
+                  }
+                  return null;
                 },
                 onSaved: (value) {
                   _editedProduct = Product(
