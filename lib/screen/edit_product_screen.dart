@@ -95,8 +95,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     _form.currentState!.save();
    
      if(isNew){
-       Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
-         
+       Provider.of<Products>(context, listen: false).addProduct(_editedProduct);  
      }else{
        Provider.of<Products>(context, listen: false).updateProduct(_editedProduct.id, _editedProduct);
      }

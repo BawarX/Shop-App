@@ -62,6 +62,16 @@ class Products with ChangeNotifier {
   // }
 
   void addProduct(Product product) {
+    final url = Uri.https('app-shop-3f804-default-rtdb.firebaseio.com','/product.json');
+    http.post(url,body: json.encode({
+      'title': product.title,
+       'id' : product.id,
+       'imageUrl' : product.imageUrl,
+       'price' : product.price,
+       'isFavorite' : product.isFavorite,
+    }
+    )
+     );
     final newProduct = Product(
       title: product.title,
       description: product.description,
@@ -87,13 +97,3 @@ class Products with ChangeNotifier {
   }
 }
 
-// final url = Uri.https('https://app-shop-3f804-default-rtdb.firebaseio.com','/product.json');
-//     http.post(url,body: jsonEncode({
-//       'title': product.title,
-//        'id' : product.id,
-//        'imageUrl' : product.imageUrl,
-//        'price' : product.price,
-//        'isFavorite' : product.isFavorite,
-//     }
-//     )
-//      );
