@@ -13,7 +13,8 @@ class ProductScreenDetail extends StatelessWidget {
 
     final loadedProduct = Provider.of<Products>(
       context,
-      listen: false,
+      listen: false
+      
     ).findById(productId);
 
     return Scaffold(

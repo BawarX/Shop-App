@@ -1,13 +1,11 @@
 
 import 'dart:math';
-
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shopapp/provider/orders.dart' as ord;
 
 class orderItem extends StatefulWidget {
-  late final ord.OrderItem order;
+   final ord.OrderItem order;
 
   orderItem(this.order);
 

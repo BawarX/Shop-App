@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shopapp/provider/product.dart';
-import 'package:shopapp/widget/product_item.dart';
+import 'package:http/http.dart'as http;
+
 
 class Products with ChangeNotifier {
   List<Product> _items = [
@@ -74,11 +76,9 @@ class Products with ChangeNotifier {
 
   void updateProduct(String id, Product newProduct) {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
-    if (prodIndex > 0) {
+    if (prodIndex >= 0) {
       _items[prodIndex] = newProduct;
       notifyListeners();
-    } else {
-      print('...');
     }
   }
   void deleteProduct(String id){
@@ -86,3 +86,14 @@ class Products with ChangeNotifier {
     notifyListeners();
   }
 }
+
+// final url = Uri.https('https://app-shop-3f804-default-rtdb.firebaseio.com','/product.json');
+//     http.post(url,body: jsonEncode({
+//       'title': product.title,
+//        'id' : product.id,
+//        'imageUrl' : product.imageUrl,
+//        'price' : product.price,
+//        'isFavorite' : product.isFavorite,
+//     }
+//     )
+//      );
