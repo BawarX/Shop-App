@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shopapp/provider/product.dart';
-import 'package:http/http.dart'as http;
-
+import 'package:http/http.dart' as http;
 
 class Products with ChangeNotifier {
   List<Product> _items = [
@@ -61,32 +60,32 @@ class Products with ChangeNotifier {
   //    notifyListeners();
   // }
 
-  Future<void> addProduct(Product product) {
-    final url = Uri.https('app-shop-3f804-default-rtdb.firebaseio.com','/product.json');
-   return http.post(url,body: json.encode({
-      'title': product.title,
-       'id' : product.id,
-       'imageUrl' : product.imageUrl,
-       'price' : product.price,
-       'isFavorite' : product.isFavorite,
-    }
-    )
-     ).then((response) {
-       final newProduct = Product(
-      title: product.title,
-      description: product.description,
-      price: product.price,
-      imageUrl: product.imageUrl,
-      id: json.decode(response.body)['name'],
-    );
-    _items.add(newProduct);
-    //_items.insert
-    notifyListeners();
-     }).catchError((error){
+  Future<void> addProduct(Product product) async {
+    final url = Uri.https(
+        'app-shop-3f804-default-rtdb.firebaseio.com', '/productt.jn');
+    try {
+      final response = await http.post(url,
+          body: json.encode({
+            'title': product.title,
+            'id': product.id,
+            'imageUrl': product.imageUrl,
+            'price': product.price,
+            'isFavorite': product.isFavorite,
+          }));
+      final newProduct = Product(
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        id: json.decode(response.body)['name'],
+      );
+      _items.add(newProduct);
+      //_items.insert
+      notifyListeners();
+    } catch (error) {
       print(error);
-      throw error;
-     });
-
+      throw (error);
+    }
   }
 
   void updateProduct(String id, Product newProduct) {
@@ -96,9 +95,9 @@ class Products with ChangeNotifier {
       notifyListeners();
     }
   }
-  void deleteProduct(String id){
-    _items.removeWhere((prod) => prod.id ==  id);
+
+  void deleteProduct(String id) {
+    _items.removeWhere((prod) => prod.id == id);
     notifyListeners();
   }
 }
-

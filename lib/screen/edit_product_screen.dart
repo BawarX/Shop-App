@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopapp/provider/product.dart';
@@ -85,7 +87,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
-  void _saveForm() {
+  Future<void> _saveForm() async {
     final isValid = _form.currentState!.validate();
     if (!isValid) {
       return;
@@ -95,22 +97,31 @@ class _EditProductScreenState extends State<EditProductScreen> {
       _isLoading = true;
     });
     if (isNew) {
-      Provider.of<Products>(context, listen: false)
-          .addProduct(_editedProduct)
-          .catchError((error) {
-        showDialog(
+      try{
+          await Provider.of<Products>(context, listen: false)
+          .addProduct(_editedProduct);
+      }catch(error){
+        await showDialog<Null>(
           context: context,
           builder: (ctx) => AlertDialog(
             title: Text("An error has occured"),
-            content: Text("something went wront $error"),
+            content: Text("something went wrong",),
+            actions: [
+              FlatButton(onPressed: (){
+                Navigator.of(ctx).pop(); // aw popa bas labo dialogakaya
+              }, 
+              child: Text("Okay"),),
+            ],
           ),
         );
-      }).then((_) {
+      } finally{
         setState(() {
           _isLoading = false;
         });
         Navigator.of(context).pop();
-      });
+      }
+     
+
     } else {
       Provider.of<Products>(context, listen: false)
           .updateProduct(_editedProduct.id, _editedProduct);
