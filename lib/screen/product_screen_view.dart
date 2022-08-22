@@ -39,7 +39,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen> {
   void didChangeDependencies() {
     if(_isInit){
       setState(() {
-         _isLoading = false;// xoy abe true be
+         _isLoading = true;// xoy abe true be
       });
      
       Provider.of<Products>(context).fetchAndSetProducts().then((_) {
@@ -62,7 +62,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen> {
             onSelected: (FilterOptions selectedValue) {
               setState(() {
                 if (selectedValue == FilterOptions.Favorites) {
-                  _showFavoriateOnly = false; // xoy abe true be
+                  _showFavoriateOnly = true; // xoy abe true be
                 } else {
                   _showFavoriateOnly = false;
                 }

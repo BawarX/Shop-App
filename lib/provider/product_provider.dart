@@ -93,7 +93,8 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final url = Uri.https(
-        'app-shop-3f804-default-rtdb.firebaseio.com', '/product.json');
+        'app-shop-3f804-default-rtdb.firebaseio.com', '/product.json'
+        );
     try {
       final response = await http.post(url,
           body: json.encode({
@@ -120,9 +121,19 @@ class Products with ChangeNotifier {
     }
   }
 
-  void updateProduct(String id, Product newProduct) {
+  Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
+      final url = Uri.https(
+        'app-shop-3f804-default-rtdb.firebaseio.com', '/product/$id.json'
+        );
+       await http.patch(url,body: json.encode({
+          'description' : newProduct.description,
+          'id' : newProduct.id,// zyada agadar ba
+          'imageUrl': newProduct.imageUrl,
+          'price': newProduct.price,
+          'title': newProduct.title,
+        },),);
       _items[prodIndex] = newProduct;
       notifyListeners();
     }
