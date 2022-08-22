@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopapp/provider/cart.dart';
+import 'package:shopapp/provider/product_provider.dart';
 import 'package:shopapp/screen/cart_screen.dart';
 import 'package:shopapp/widget/app_drawer.dart';
 import 'package:shopapp/widget/badge.dart';
@@ -18,6 +19,39 @@ class ProductOverViewScreen extends StatefulWidget {
 
 class _ProductOverViewScreenState extends State<ProductOverViewScreen> {
   bool _showFavoriateOnly = false;
+  var _isInit = true;
+  var _isLoading = false;
+
+  // @override
+  // void initState() {
+  //   Provider.of<Products>(context,listen: false).fetchAndSetProducts();
+  //   // Future.delayed(Duration.zero).then((_){
+  //   //   Provider.of<Products>(context,listen: false).fetchAndSetProducts().then((_){
+       
+  //   //   });
+  //   // });
+    
+  //   super.initState();
+  // }
+
+
+  @override
+  void didChangeDependencies() {
+    if(_isInit){
+      setState(() {
+         _isLoading = false;// xoy abe true be
+      });
+     
+      Provider.of<Products>(context).fetchAndSetProducts().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +62,7 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen> {
             onSelected: (FilterOptions selectedValue) {
               setState(() {
                 if (selectedValue == FilterOptions.Favorites) {
-                  _showFavoriateOnly = true;
+                  _showFavoriateOnly = false; // xoy abe true be
                 } else {
                   _showFavoriateOnly = false;
                 }
@@ -63,7 +97,9 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen> {
         ],
       ),
       drawer: AppDrawer(),
-      body: productGrid(_showFavoriateOnly),
+      body: _isLoading ?
+       Center(child: CircularProgressIndicator(),) 
+       : productGrid(_showFavoriateOnly),
     );
   }
 }
