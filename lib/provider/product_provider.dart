@@ -39,6 +39,10 @@ class Products with ChangeNotifier {
     // ),
   ];
 
+   String authToken;
+   
+  Products(this.authToken,this._items);
+
   List<Product> get items {
     return [..._items];
   }
@@ -62,13 +66,16 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     final url = Uri.https(
-      'app-shop-3f804-default-rtdb.firebaseio.com', '/product.json'
+      'app-shop-3f804-default-rtdb.firebaseio.com', '/product.json?auth=$authToken'
     );
    // final url = "app-shop-3f804-default-rtdb.firebaseio.com";
     try{
       final response = await http.get(url);  
     //  final response = await http.get(Uri.parse(url));
       final extraxtedData = jsonDecode(response.body) as Map<String,dynamic>;
+      if(extraxtedData == null){
+        return;
+      }
       final List<Product> loadedProducts = [];  
       extraxtedData.forEach((prodId, prodData) {        
         loadedProducts.add(Product(
