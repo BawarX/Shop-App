@@ -1,15 +1,25 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 import 'package:shopapp/provider/orders.dart';
 import 'package:shopapp/widget/app_drawer.dart';
 import 'package:shopapp/widget/order_item.dart';
 
-class OrderScreen extends StatelessWidget {
+class OrderScreen extends StatefulWidget {
   static const routeName = '/orders';
 
+  @override
+  State<OrderScreen> createState() => _OrderScreenState();
+}
+
+class _OrderScreenState extends State<OrderScreen> {
+  @override
+  void initState() {
+    Future.delayed(Duration.zero).then((_){
+      Provider.of<Orders>(context,listen: false).fetchAndSetOrders();
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final orderData = Provider.of<Orders>(context);
