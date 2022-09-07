@@ -76,6 +76,9 @@ class Products with ChangeNotifier {
       if(extraxtedData == null){
         return;
       }
+      // final favoriteResponse = await http.get(
+      //    'app-shop-3f804-default-rtdb.firebaseio.com', '/userFavorite/$userId.json?auth=$authToken' 
+      // );
       final List<Product> loadedProducts = [];  
       extraxtedData.forEach((prodId, prodData) {        
         loadedProducts.add(Product(
@@ -100,7 +103,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final url = Uri.https(
-        'app-shop-3f804-default-rtdb.firebaseio.com', '/product.json'
+        'app-shop-3f804-default-rtdb.firebaseio.com', '/product.json?auth=$authToken'
         );
     try {
       final response = await http.post(url,
@@ -132,7 +135,7 @@ class Products with ChangeNotifier {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
       final url = Uri.https(
-        'app-shop-3f804-default-rtdb.firebaseio.com', '/product/$id.json'
+        'app-shop-3f804-default-rtdb.firebaseio.com', '/product/$id.json?auth=$authToken'
         );
        await http.patch(url,body: json.encode({
           'description' : newProduct.description,
@@ -148,7 +151,7 @@ class Products with ChangeNotifier {
 
   void deleteProduct(String id) {
    final url = Uri.https(
-        'app-shop-3f804-default-rtdb.firebaseio.com', '/product/$id.json'
+        'app-shop-3f804-default-rtdb.firebaseio.com', '/product/$id.json?auth=$authToken'
         );
     final exisitingProductIndex = _items.indexWhere((prod) => prod.id == id);   
     var existingProduct = _items[exisitingProductIndex];
